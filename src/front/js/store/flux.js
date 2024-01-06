@@ -24,6 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			movies_from_api_2:[],
 			recommendedFunnyMovie: null,
 			recommendedSadMovie: null,
+			recommendedAnimeKidsMovie: null,
 			
 
 		},
@@ -39,6 +40,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setRecommendedSadMovie: movie => {
                 setStore({ recommendedSadMovie: movie });
+			},
+			
+			setRecommendedKidsAnimatedMovie: movie => {
+                setStore({ recommendedAnimeKidsMovie: movie });
 			},
 
 			getMovie: () => {
@@ -175,6 +180,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const ramdomIndex = Math.floor(Math.random() * sadMovie.length);
 						const ramdomMovie = sadMovie[ramdomIndex];
 						getActions().setRecommendedSadMovie(ramdomMovie);
+						console.log(ramdomMovie)
+					}
+					})
+					.catch(err => console.error(err));
+				
+			},
+
+			getKidsAnimatedRecommendation: () => {
+				const options = {
+					method: 'GET',
+				};
+
+				fetch('https://ominous-invention-7gwqjv65g5qhwwrw-3001.app.github.dev/api/movies_2', options)
+					.then(response => response.json())
+					.then(data => {
+						const kidsAnimatedMovie = data.filter(movie => movie.kids && movie.animation === true);
+						console.log(kidsAnimatedMovie)
+
+					if (kidsAnimatedMovie.length > 0){
+						const ramdomIndex = Math.floor(Math.random() * kidsAnimatedMovie.length);
+						const ramdomMovie = kidsAnimatedMovie[ramdomIndex];
+						getActions().setRecommendedKidsAnimatedMovie(ramdomMovie);
 						console.log(ramdomMovie)
 					}
 					})
