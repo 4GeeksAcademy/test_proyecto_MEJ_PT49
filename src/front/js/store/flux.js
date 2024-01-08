@@ -25,6 +25,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			recommendedFunnyMovie: null,
 			recommendedSadMovie: null,
 			recommendedAnimeKidsMovie: null,
+			recommendedAnimeMovie: null,
 			
 
 		},
@@ -44,6 +45,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 			setRecommendedKidsAnimatedMovie: movie => {
                 setStore({ recommendedAnimeKidsMovie: movie });
+			},
+
+			setRecommendedAnimatedMovie: movie => {
+                setStore({ recommendedAnimeMovie: movie });
 			},
 
 			getMovie: () => {
@@ -79,7 +84,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				};
 				
-				fetch('https://api.themoviedb.org/3/movie/top_rated?language=es-ES&page=100', options)
+				fetch('https://api.themoviedb.org/3/movie/top_rated?language=es-ES&page=1', options)
 					.then(response => response.json())
 					.then(data => {
 						console.log(data)
@@ -136,32 +141,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(response => response.json())
 					.then(data => {
 						console.log(data)
+						console.time()
 						setStore({ movies_from_api_2: data || [] });
+						console.timeEnd()
 					})
 					.catch(err => console.error(err));
 			},
 
 			getFunnyRecommendation: () => {
-				console.log("Hola desde Flux")
+				console.log("Esta es la lista de las peliculas con funny = true")
 				const options = {
 					method: 'GET',
 				};
-
-				fetch('https://ominous-invention-7gwqjv65g5qhwwrw-3001.app.github.dev/api/movies_2', options)
+			
+				// Devolver la promesa resultante de fetch
+				return fetch('https://ominous-invention-7gwqjv65g5qhwwrw-3001.app.github.dev/api/movies_2', options)
 					.then(response => response.json())
 					.then(data => {
 						const funnyMovie = data.filter(movie => movie.funny === true);
 						console.log(funnyMovie)
-
-					if (funnyMovie.length > 0){
-						const ramdomIndex = Math.floor(Math.random() * funnyMovie.length);
-						const ramdomMovie = funnyMovie[ramdomIndex];
-						getActions().setRecommendedFunnyMovie(ramdomMovie);
-						console.log(ramdomMovie)
-					}
+			
+						if (funnyMovie.length > 0) {
+							const ramdomIndex = Math.floor(Math.random() * funnyMovie.length);
+							const ramdomMovie = funnyMovie[ramdomIndex];
+							getActions().setRecommendedFunnyMovie(ramdomMovie);
+							console.log(ramdomMovie);
+							return funnyMovie; // Devolver el array de películas divertidas
+						}
+			
+						return []; // Devolver un array vacío si no hay películas divertidas
 					})
-					.catch(err => console.error(err));
-				
+					.catch(err => {
+						console.error(err);
+						return []; // Devolver un array vacío en caso de error
+					});
 			},
 
 			getSadRecommendation: () => {
@@ -197,11 +210,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(data => {
 						const kidsAnimatedMovie = data.filter(movie => movie.kids && movie.animation === true);
 						console.log(kidsAnimatedMovie)
+						console.time()
+						console.timeEnd()
+
 
 					if (kidsAnimatedMovie.length > 0){
 						const ramdomIndex = Math.floor(Math.random() * kidsAnimatedMovie.length);
 						const ramdomMovie = kidsAnimatedMovie[ramdomIndex];
 						getActions().setRecommendedKidsAnimatedMovie(ramdomMovie);
+						console.log(ramdomMovie)
+					}
+					})
+					.catch(err => console.error(err));
+				
+			},
+
+			getAnimatedRecommendation: () => {
+				const options = {
+					method: 'GET',
+				};
+
+				fetch('https://ominous-invention-7gwqjv65g5qhwwrw-3001.app.github.dev/api/movies_2', options)
+					.then(response => response.json())
+					.then(data => {
+						const animatedMovie = data.filter(movie => movie.animation === true);
+						console.log(animatedMovie)
+						console.time()
+						console.timeEnd()
+
+
+					if (animatedMovie.length > 0){
+						const ramdomIndex = Math.floor(Math.random() * animatedMovie.length);
+						const ramdomMovie = animatedMovie[ramdomIndex];
+						getActions().setRecommendedAnimatedMovie(ramdomMovie);
 						console.log(ramdomMovie)
 					}
 					})

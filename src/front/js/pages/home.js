@@ -6,7 +6,7 @@ import { Card } from "../component/card";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
-  const { title, overview, poster_path, release_date } = store.movie || {};
+  const { title, overview, poster_path, release_date, vote_average } = store.movie || {};
   const { results } = store;
 
   useEffect(() => {
@@ -29,14 +29,14 @@ export const Home = () => {
 
   return (
     <div className="text-center mt-5">
-      <Card title={title} overview={overview} poster_path={poster_path} release_date={release_date} />
+      <Card title={title} overview={overview} poster_path={poster_path} release_date={release_date} vote_average={vote_average} />
       <button onClick={() => actions.getMovie()}>Get movie</button>
 	  <button onClick={() => handleGetMovieList()}>Get movie List</button>
       {groupedResults.map((group, groupIndex) => (
         <div key={groupIndex} className="row justify-content-center">
           {group.map((movie, index) => (
             <div key={index} className="col-3">
-              <Card title={movie.title} overview={movie.overview} poster_path={movie.poster_path} release_date={movie.release_date} />
+              <Card title={movie.title} overview={movie.overview} poster_path={movie.poster_path} release_date={movie.release_date} vote_average={movie.vote_average} />
             </div>
           ))}
         </div>

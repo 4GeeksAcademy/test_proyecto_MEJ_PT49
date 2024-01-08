@@ -13,7 +13,10 @@ export const Navbar = () => {
 						<button className="btn btn-primary me-2">Demo 1</button>
 					</Link>
 					<Link to="/demo2">
-						<button className="btn btn-primary">Demo 2</button>
+						<button className="btn btn-primary me-2">Demo 2</button>
+					</Link>
+					<Link to="/demo3">
+						<button className="btn btn-primary">Demo 3</button>
 					</Link>
 				</div>
 			</div>

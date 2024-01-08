@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "../../styles/demo2.css";
 import { Context } from "../store/appContext";
 
 export const Demo2 = () => {
@@ -65,6 +66,12 @@ export const Demo2 = () => {
                     )}
                 </div>
             )}
+            <div>
+            <button className="botonRaro">
+                <span>Test Hover</span>
+            </button>
+            </div>
+
         </>
     );
 };
